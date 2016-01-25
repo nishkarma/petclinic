@@ -1,0 +1,26 @@
+<body th:fragment="bodyHeader">
+
+<img th:src="@{${scheme}+'://'+${staticUrl}+'/images/banner-graphic.png'}"/>
+
+<div class="navbar" style="width: 601px;">
+    <div class="navbar-inner">
+        <ul class="nav">
+            <li style="width: 100px;"><a href="../welcome.html" th:href="@{${internationalization.internationalPath}+'/'}"><i class="icon-home"></i><span th:text="#{ui.home}">Home</span></a></li>
+            <li style="width: 130px;"><a href="../owners/findOwners.html" th:href="@{${internationalization.internationalPath}+'/owners/find.html'}"><i class="icon-search"></i><span th:text="#{ui.findOwners}">Find owners</span></a></li>
+            <li style="width: 140px;"><a href="../vets/vetList.html" th:href="@{${internationalization.internationalPath}+'/vets.html'}"><i class="icon-th-list"></i><span th:text="#{ui.veterinarians}">Veterinarians</span></a></li>
+            <li style="width: 90px;"><a href="../exception.html" th:href="@{${internationalization.internationalPath}+'/oups.html'}" title="trigger a RuntimeException to see how it is handled"><i class="icon-warning-sign"></i><span th:text="#{ui.error}">Error</span></a></li>
+            <li style="width: 80px;"><a href="../book/books.html" th:href="@{/book/books.html}"><i class=" icon-question-sign"></i><span th:text="#{ui.restfulBook}">RESTFul Book</span></a></li>
+        </ul>
+    </div>
+	<div class="navbar-inner">
+		<ul class="nav">
+			<li id="en"><a href="#" th:href="@{/localechanger(internationalPath='/en-us',url=${url})}" title="English">English</a></li>
+			<li id="ko"><a href="#" th:href="@{/localechanger(internationalPath='/ko-kr',url=${url})}" title="한국어">한국어</a></li>
+			<li id="ja"><a href="#" th:href="@{/localechanger(internationalPath='/ja-jp',url=${url})}" title="日本語">日本語</a></li>
+			<li id="zh"><a href="#" th:href="@{/localechanger(internationalPath='/zh-cn',url=${url})}" title="中文">中文</a></li>
+			<li id="ru"><a href="#" th:href="@{/localechanger(internationalPath='/ru-ru',url=${url})}" title="Русский">Русский</a></li>
+		</ul>
+    </div>
+</div>
+	
+</body>

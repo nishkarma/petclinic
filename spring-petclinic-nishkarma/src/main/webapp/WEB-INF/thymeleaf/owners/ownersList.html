@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head th:include="fragments/headTag :: headTag"/>
+
+<body>
+
+<div class="container">
+
+    <div th:include="fragments/bodyHeader"></div>
+
+	<script th:src="@{${scheme}+'://'+${staticUrl}+'/js/lib/bootstrap-paginator.min.js'}"></script>
+
+    <h2>Owners </h2>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th style="width: 150px;" th:text="#{ui.Name}">Name</th>
+                <th style="width: 200px;" th:text="#{ui.address}">Address</th>
+                <th th:text="#{ui.city}">City</th>
+                <th th:text="#{ui.telephone}">Telephone</th>
+                <th style="width: 100px;" th:text="#{ui.pets}">Pets</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="owner : ${selections}">
+                <td>
+                    <a href="ownerDetails.html"
+                       th:href="@{${internationalization.internationalPath}+'/owners/' + ${owner.id}}" 
+                       th:text="${owner.firstName + ' ' + owner.lastName}">Mary Smith</a>
+                </td>
+                <td th:text="${owner.address}">45, Oxford Street</td>
+                <td th:text="${owner.city}">Cambridge</td>
+                <td th:text="${owner.telephone}">555-555-555</td>
+                <td>
+                    <span th:each="pet : ${owner.pets}" th:text="${pet.name}" th:remove="tag">
+                       Rob&nbsp;
+                    </span>
+                </td>
+            </tr>
+            <tr><td colspan="5"><div id="pagination"></div></td></tr>
+        </tbody>
+    </table>    
+
+    <script type='text/javascript' th:inline="javascript">
+        var options = {
+            currentPage: [[${findOwnerParam.page_page}]],
+            totalPages: [[${findOwnerParam.totalPages}]],
+            alignment:'center',
+            itemTexts: function (type, page, current) {
+                switch (type) {
+                case "first":
+                    return "First";
+                case "prev":
+                    return "Previous";
+                case "next":
+                    return "Next";
+                case "last":
+                    return "Last";
+                case "page":
+                    return page;
+                }
+            },
+            itemContainerClass: function (type, page, current) {
+                return (page === current) ? "active" : "pointer-cursor";
+            },
+ 			pageUrl: function(type, page, current){
+                return [[${pageUrl}]]+page;
+            },
+            
+        }            
+
+        $('#pagination').bootstrapPaginator(options);
+    </script>
+    
+    <div th:include="fragments/footer :: footer"></div>
+
+</div>
+
+</body>
+
+</html>

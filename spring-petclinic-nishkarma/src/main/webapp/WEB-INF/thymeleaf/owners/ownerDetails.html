@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+
+<head th:include="fragments/headTag :: headTag"/>
+
+<body>
+<div class="container">
+    <div th:include="fragments/bodyHeader"></div>
+
+    <h2>Owner Information</h2>
+
+    <table class="table table-striped" style="width:600px;">
+        <tr>
+            <th th:text="#{ui.Name}">Name</th>
+            <td><b th:text="${owner.firstName + ' ' + owner.lastName}">[firstname lastname]</b></td>
+        </tr>
+        <tr>
+            <th th:text="#{ui.address}">Address</th>
+            <td th:text="${owner.address}">[address]</td>
+        </tr>
+        <tr>
+            <th th:text="#{ui.city}">City</th>
+            <td th:text="${owner.city}">[city]</td>
+        </tr>
+        <tr>
+            <th th:text="#{ui.telephone}">Telephone</th>
+            <td th:text="${owner.telephone}">[telephone]</td>
+        </tr>
+         <tr>
+            <td> 
+            	<a th:href="@{${internationalization.internationalPath} + '/owners/' + ${owner.id} + '/edit.html'}" href="./createOrUpdateOwnerForm.html" class="btn btn-info">Edit Owner</a></td>
+            <td>
+            	<a th:href="@{${internationalization.internationalPath}  + '/owners/' + ${owner.id} + '/pets/new.html'}" href="../pets/createOrUpdatePetForm.html"  class="btn btn-success">Add New Pet</a></td>
+        </tr>
+    </table>
+
+    <h2>Pets and Visits</h2>
+
+    
+        <table class="table" style="width:600px;" th:each="pet : ${owner.pets}">
+            <tr>
+                <td valign="top" style="width: 120px;">
+                    <dl class="dl-horizontal">
+                        <dt>Name</dt>
+                        <dd th:text="${pet.name}">[name]</dd>
+                        <dt>Birth Date</dt>
+                        <dd th:text="${#dates.format(pet.birthDate.toDate(), 'yyyy-MM-dd')}">[birthdate yyyy-MM-dd]</dd>
+                        <dt>Type</dt>
+                        <dd th:text="${pet.type.name}">[type]</dd>
+                    </dl>
+                </td>
+                <td valign="top">
+                    <table class="table-condensed">
+                        <thead>
+                        <tr>
+                            <th>Visit Date</th>
+                            <th>Description</th>
+                        </tr>
+                        </thead>
+                            <tr th:each="visit : ${pet.visits}">
+                                <td th:text="${#dates.format(visit.visitDate.toDate(), 'yyyy-MM-dd')}">[date yyyy-MM-dd</td>
+                                <td th:text="${visit.description}">[description]</td>
+                            </tr>
+                        <tr>
+                            <td> 
+			                    <a th:href="@{${internationalization.internationalPath}+'/owners/' + ${owner.id} + '/pets/' + ${pet.id} + '/edit'}" 
+                                    href="../pets/createOrUpdatePetForm.html">Edit Pet</a>
+			                </td>
+                            <td>
+			                    <a th:href="@{${internationalization.internationalPath}+'/owners/' + ${owner.id} + '/pets/' + ${pet.id} + '/visits/new'}" 
+                                    href="../pets/createOrUpdateVisitForm.html">Add Visit</a>
+                            </td>
+                       	</tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    
+    <div th:include="fragments/footer :: footer"></div>
+
+
+</div>
+
+</body>
+
+</html>

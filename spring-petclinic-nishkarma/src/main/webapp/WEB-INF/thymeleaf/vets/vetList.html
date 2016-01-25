@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head th:include="fragments/headTag :: headTag"/>
+
+<body>
+
+<div class="container">
+
+    <div th:include="fragments/bodyHeader"></div>
+
+    <h2>Veterinarians</h2>
+
+    <table class="table table-stripped" style="width:600px;">
+        <thead>
+        <tr>
+            <th th:text="#{ui.firstName}">firstName</th>
+            <th th:text="#{ui.lastName}">lastName</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr th:each="vet : ${vets.vetList}">
+                <td th:text="${vet.firstName}">[firstName]</td>
+                <td th:text="${vet.lastName}">[lastName]</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div th:include="fragments/footer :: footer"></div>
+
+</div>
+</body>
+
+</html>

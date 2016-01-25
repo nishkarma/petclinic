@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title>Rich HTML email in Spring with Thymeleaf</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+    <body>
+        <h1>Rich HTML email in Spring with Thymeleaf</h1>
+        <h2>Success!</h2>
+        <p>The e-mail has been sent, please check your inbox.</p>
+        <p>
+          <a href="mail.html" th:href="@{/mail/new}">Back to home page</a>
+        </p>
+    </body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head th:include="fragments/headTag :: headTag"/>
+
+<body>
+<div class="container">
+
+    <div th:include="fragments/bodyHeader"></div>
+
+    <h2 th:text="#{ui.welcome}">Welcome!</h2>
+
+    <img th:src="@{${scheme}+'://'+${staticUrl}+'/images/pets.png'}"/>
+
+    <div th:include="fragments/footer :: footer"></div>
+
+</div>
+</body>
+
+</html>
