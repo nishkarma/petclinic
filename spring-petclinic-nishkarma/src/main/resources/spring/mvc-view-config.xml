@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- - DispatcherServlet application context for PetClinic's web tier. -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:oxm="http://www.springframework.org/schema/oxm"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/oxm
+        http://www.springframework.org/schema/oxm/spring-oxm.xsd
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/util
+        http://www.springframework.org/schema/util/spring-util-3.0.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
+
+	<!-- Use spring servlet for all requests, including static resources -->
+	<mvc:default-servlet-handler />
+
+	<!-- Use @MVC annotations -->
+	<mvc:annotation-driven />
+
+	<util:properties id="properties" location="classpath:spring/petclinic.properties, classpath:mail/mailaccount.properties" />
+
+	<!-- Email support -->
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="#{properties['mail.server.host']}" />
+		<property name="port" value="#{properties['mail.server.port']}" />
+		<property name="protocol" value="#{properties['mail.server.protocol']}" />
+		<property name="username" value="#{properties['mail.server.username']}" />
+		<property name="password" value="#{properties['mail.server.password']}" />
+		<property name="javaMailProperties">
+			<util:properties location="classpath:mail/javamail.properties" />
+		</property>
+	</bean>
+
+	<context:component-scan base-package="org.nishkarma/**/mail">
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Service" />
+	</context:component-scan>
+
+	<bean id="emailTemplateResolver"
+		class="org.thymeleaf.templateresolver.ClassLoaderTemplateResolver">
+		<property name="prefix" value="mail/templates/" />
+		<property name="templateMode" value="HTML5" />
+		<property name="characterEncoding" value="UTF-8" />
+		<property name="order" value="1" />
+		<!-- Template cache is true by default. Set to false if you want -->
+		<!-- templates to be automatically updated when modified. -->
+		<property name="cacheable" value="false" />
+	</bean>
+
+	<!-- THYMELEAF: Template Resolver for webapp pages -->
+	<!-- (we would not need this if our app was not web) -->
+	<bean id="webTemplateResolver"
+		class="org.thymeleaf.templateresolver.ServletContextTemplateResolver">
+		<property name="prefix" value="/WEB-INF/thymeleaf/" />
+		<property name="suffix" value=".html" />
+		<property name="templateMode" value="HTML5" />
+		<property name="characterEncoding" value="UTF-8" />
+		<property name="order" value="2" />
+		<!-- Template cache is true by default. Set to false if you want -->
+		<!-- templates to be automatically updated when modified. -->
+		<property name="cacheable" value="false" />
+	</bean>
+
+	<!-- THYMELEAF: Template Engine (Spring3-specific version) -->
+	<bean id="templateEngine" class="org.thymeleaf.spring3.SpringTemplateEngine">
+		<property name="templateResolvers">
+			<set>
+				<ref bean="emailTemplateResolver" />
+				<ref bean="webTemplateResolver" />
+			</set>
+		</property>
+	</bean>
+
+	<!-- THYMELEAF: View Resolver - implementation of Spring's ViewResolver 
+		interface -->
+	<!-- (we would not need this if our app was not web) -->
+	<bean id="viewResolver" class="org.thymeleaf.spring3.view.ThymeleafViewResolver">
+		<property name="templateEngine" ref="templateEngine" />
+		<property name="characterEncoding" value="UTF-8" />
+	</bean>
+
+</beans>

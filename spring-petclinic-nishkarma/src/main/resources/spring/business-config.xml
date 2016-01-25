@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Repository and Service layers -->
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
+	<!-- ========================= RESOURCE DEFINITIONS ========================= -->
+
+	<!-- import the dataSource definition -->
+	<import resource="datasource-config.xml" />
+
+	<!-- transaction manager, use JtaTransactionManager for global tx -->
+	<bean id="transactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource-main" />
+	</bean>
+
+	<!-- enable autowire -->
+	<context:annotation-config />
+	
+	<context:component-scan base-package="org.nishkarma/**/service">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service" />
+	</context:component-scan>
+
+	<!-- enables scanning for @Transactional annotations -->
+	<tx:annotation-driven />
+	<!-- define the SqlSessionFactory -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<qualifier value="mainDB" />
+		<property name="dataSource" ref="dataSource-main" />
+		<property name="configLocation" value="classpath:spring/mybatis-config-base.xml" />
+		<property name="typeAliasesPackage" value="org.nishkarma/**/model" />
+		<property name="mapperLocations" value="classpath:org/nishkarma/**/repository/*.xml" />
+	</bean>
+	
+	<!-- scan for mappers and let them be autowired -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="sqlSessionFactory" ref="sqlSessionFactory" />
+		<property name="basePackage" value="org.nishkarma/**/repository" />
+	</bean>
+	
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate" destroy-method="clearCache">
+		<qualifier value="mainDB" />
+	    <constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+ 
+</beans>
