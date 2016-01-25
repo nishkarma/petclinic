@@ -20,6 +20,8 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.nishkarma.common.restful.exception.RESTfulException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.stereotype.Controller;
 
 @Path("/fileupload")
@@ -53,9 +55,12 @@ public class UploadController {
 				logger.error(ExceptionUtils.getStackTrace(e1));
 			}
 
+			String uploadBase = "/Users/nish/git/web-application/spring-petclinic-nishkarma/uploads/";
+			
+			logger.debug("[Nishkarma]-uploadBase=" + uploadBase);
 			logger.debug("[Nishkarma]-fileName=" + fileName);
-
-			String uploadedFileLocation = "d://tmp4/" + fileName;
+			
+			String uploadedFileLocation = uploadBase + fileName;
 
 			// save it
 			saveToFile(uploadedInputStream, uploadedFileLocation);

@@ -21,15 +21,23 @@
 	<!-- Use @MVC annotations -->
 	<mvc:annotation-driven />
 
-	<util:properties id="properties" location="classpath:spring/petclinic.properties, classpath:mail/mailaccount.properties" />
+  	<bean id="propSource"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:/spring/petclinic.properties</value>
+				<value>classpath:/mail/mailaccount.properties</value>
+			</list>
+		</property>
+	</bean>		
 
 	<!-- Email support -->
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="#{properties['mail.server.host']}" />
-		<property name="port" value="#{properties['mail.server.port']}" />
-		<property name="protocol" value="#{properties['mail.server.protocol']}" />
-		<property name="username" value="#{properties['mail.server.username']}" />
-		<property name="password" value="#{properties['mail.server.password']}" />
+		<property name="host" value="${mail.server.host}" />
+		<property name="port" value="${mail.server.port}" />
+		<property name="protocol" value="${mail.server.protocol}" />
+		<property name="username" value="${mail.server.username}" />
+		<property name="password" value="${mail.server.password}" />
 		<property name="javaMailProperties">
 			<util:properties location="classpath:mail/javamail.properties" />
 		</property>

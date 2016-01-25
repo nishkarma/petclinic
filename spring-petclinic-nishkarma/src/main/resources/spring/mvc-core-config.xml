@@ -83,7 +83,7 @@
 		<mvc:interceptor>
 			<mvc:mapping path="/**" />
 			<bean class="org.nishkarma.common.interceptor.NishkarmaInterceptor">
-			<property name="staticUrl" value="#{properties['static.url']}" />
+			<property name="staticUrl" value="${static.url}" />
 			</bean>
 		</mvc:interceptor>
 	</mvc:interceptors>

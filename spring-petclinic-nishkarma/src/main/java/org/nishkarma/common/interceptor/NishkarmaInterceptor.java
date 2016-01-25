@@ -104,10 +104,6 @@ public class NishkarmaInterceptor implements HandlerInterceptor {
 
 			Internationalization internationalization = nishkarmaCommonData
 					.getInternationalizationPath(internationalPath);
-
-			logger.debug("--url={}", url);
-			logger.debug("--internationalization={}", internationalization);
-			
 			
 			if (internationalization.getLanguageTag() != null
 					&& NishkarmaLocaleUtil.resolveLocale().toLanguageTag() != null
