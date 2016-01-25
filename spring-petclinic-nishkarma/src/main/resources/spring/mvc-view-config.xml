@@ -21,15 +21,9 @@
 	<!-- Use @MVC annotations -->
 	<mvc:annotation-driven />
 
-  	<bean id="propSource"
-		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="locations">
-			<list>
-				<value>classpath:/spring/petclinic.properties</value>
-				<value>classpath:/mail/mailaccount.properties</value>
-			</list>
-		</property>
-	</bean>		
+
+	<context:property-placeholder
+		location="classpath:spring/petclinic.properties, classpath:mail/mailaccount.properties" />
 
 	<!-- Email support -->
 	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">

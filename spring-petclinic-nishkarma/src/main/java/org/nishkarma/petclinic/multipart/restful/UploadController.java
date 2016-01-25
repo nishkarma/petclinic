@@ -20,8 +20,6 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.nishkarma.common.restful.exception.RESTfulException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
 import org.springframework.stereotype.Controller;
 
 @Path("/fileupload")
@@ -30,6 +28,9 @@ public class UploadController {
 
 	Logger logger = LoggerFactory.getLogger(UploadController.class);
 
+	private String uploadBase = "/Users/nish/git/web-application/spring-petclinic-nishkarma/uploads/";
+
+	
 	@POST
 	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	public Response uploadFile(@FormDataParam("hello") String hello,
@@ -55,18 +56,11 @@ public class UploadController {
 				logger.error(ExceptionUtils.getStackTrace(e1));
 			}
 
-			String uploadBase = "/Users/nish/git/web-application/spring-petclinic-nishkarma/uploads/";
-			
-			logger.debug("[Nishkarma]-uploadBase=" + uploadBase);
-			logger.debug("[Nishkarma]-fileName=" + fileName);
-			
-			String uploadedFileLocation = uploadBase + fileName;
-
 			// save it
-			saveToFile(uploadedInputStream, uploadedFileLocation);
+			String rtnPath = saveToFile(uploadedInputStream, fileName);
 
 			output = "File uploaded via Jersey based RESTFul Webservice to: "
-					+ uploadedFileLocation;
+					+ rtnPath;
 
 		} catch (Exception e) {
 			logger.error(ExceptionUtils.getStackTrace(e));
@@ -78,10 +72,16 @@ public class UploadController {
 	}
 
 	// save uploaded file to new location
-	private void saveToFile(InputStream uploadedInputStream,
-			String uploadedFileLocation) {
-
+	public String saveToFile(InputStream uploadedInputStream,
+			String fileName) {
+		String uploadedFileLocation = "";
+		
 		try {
+			logger.debug("[Nishkarma]-uploadBase###=" + getUploadBase());
+			logger.debug("[Nishkarma]-fileName=" + fileName);
+			
+			uploadedFileLocation = getUploadBase() + fileName;
+
 			OutputStream out = null;
 			int read = 0;
 			byte[] bytes = new byte[1024];
@@ -95,6 +95,16 @@ public class UploadController {
 		} catch (IOException e) {
 			logger.error(ExceptionUtils.getStackTrace(e));
 		}
+		
+		return uploadedFileLocation;
+	}
+	public String getUploadBase() {
+		return uploadBase;
+	}
+
+
+	public void setUploadBase(String uploadBase) {
+		this.uploadBase = uploadBase;
 	}
 
 }
