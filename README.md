@@ -1,1 +1,1 @@
-spring petclinic sample with Thymeleaf, MyBatis, PostgreSQL, Jersey Web Services, Multilingual Supports.
+#Spring Petclinic Sample with Thymeleaf, MyBatis, PostgreSQL, Jersey Web Services, Multilingual Supports.
