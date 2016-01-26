@@ -15,7 +15,7 @@ I customized for my favorite platforms.
 
 1) In the command line
 ```
-git clone https://github.com/nishkarma/web-application.git
+git clone https://github.com/nishkarma/petclinic.git
 ```
 2) Inside Eclipse
 ```
